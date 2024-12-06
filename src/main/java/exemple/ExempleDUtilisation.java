@@ -1,9 +1,12 @@
 package exemple;
-
-import bandeau.Bandeau;
-
 import java.awt.Color;
 import java.awt.Font;
+
+import TP.Clignotant;
+import TP.Scenario;
+import TP.Teletype;
+import TP.Zoom;
+import bandeau.Bandeau;
 
 public class ExempleDUtilisation {
 
@@ -13,47 +16,23 @@ public class ExempleDUtilisation {
 
     public void exemple() {
         Bandeau monBandeau = new Bandeau();
-        Font font = monBandeau.getFont();
-        Color back = monBandeau.getBackground();
-        Color fore = monBandeau.getForeground();
 
-        monBandeau.setMessage("Hello");
-        monBandeau.sleep(1000);
-        monBandeau.setMessage("On va changer de police");
-        monBandeau.sleep(1000);
-        monBandeau.setMessage("Monospaced 15 Bold");
-        monBandeau.setFont(new Font("Monospaced", Font.BOLD, 15));
-        monBandeau.sleep(1000);
-        monBandeau.setMessage("SansSerif 15");
-        monBandeau.setFont(new Font("SansSerif", Font.PLAIN, 15));
-        monBandeau.sleep(1000);
-        monBandeau.setMessage("On va zoomer");
-        monBandeau.sleep(1000);
-        monBandeau.setMessage("Zoom........");
-        for (int i = 5; i < 60; i += 5) {
-            monBandeau.setFont(new Font("Dialog", Font.BOLD, 5 + i));
-            monBandeau.sleep(100);
-        }
-        monBandeau.sleep(1000);
+        // Configuration initiale
+        monBandeau.setFont(new Font("SansSerif", Font.BOLD, 20));
+        monBandeau.setBackground(Color.WHITE);
+        monBandeau.setForeground(Color.BLACK);
 
-        monBandeau.setFont(new Font("Courier new", Font.PLAIN, 15));
-        monBandeau.setMessage("On va tourner");
-        monBandeau.sleep(1000);
-        monBandeau.setMessage("On tourne de 45°...");
-        monBandeau.setRotation(Math.PI / 2.0f);
-        monBandeau.sleep(1000);
-        monBandeau.setRotation(0.0f);
+        // Création du scénario
+        Scenario scenario = new Scenario(monBandeau);
 
-        monBandeau.setMessage("On va changer de couleur de fond");
-        monBandeau.sleep(1000);
-        monBandeau.setBackground(Color.DARK_GRAY);
-        monBandeau.setMessage("On va changer de couleur");
-        monBandeau.sleep(1000);
-        monBandeau.setForeground(Color.YELLOW);
-        monBandeau.sleep(1000);
-        monBandeau.setFont(font);
-        monBandeau.setForeground(fore);
-        monBandeau.setBackground(back);
+        // Ajout des effets au scénario
+        scenario.ajouterEffet(new Teletype(monBandeau, 100), 1);  // Affiche caractère par caractère
+        scenario.ajouterEffet(new Clignotant(monBandeau, 5, 300), 2);  // Clignote 5 fois, répété 2 fois
+        scenario.ajouterEffet(new Zoom(monBandeau, 10, 100), 1);  // Zoom progressif
+        // Exécution du scénario
+        scenario.jouer();
+
+        // Message final
         monBandeau.setMessage("Terminé");
         monBandeau.sleep(3000);
         monBandeau.close();
